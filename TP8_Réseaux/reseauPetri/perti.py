@@ -1,6 +1,7 @@
 
 
-from TP8_Réseaux.reseauPetri.transition import Transition
+
+from transition import Transition
 
 
 class Petri():
@@ -9,6 +10,22 @@ class Petri():
         self._nom = nom
         self._listPlaces = []
         self._listTransitions = []
+        pass
+
+    def printreseauPetri(self):
+        print("reseauPetri: " + self._nom)
+        print("Places:")
+        for place in self._listPlaces:
+            print(place._nom)
+        print("Transitions:")
+        for transition in self._listTransitions:
+            print(transition._nom)
+            print("\t"+"Conditions:")
+            for place in transition._conditions:
+                print("\t"+place._nom + ": " + str(transition._conditions[place]))
+            print("\t"+"Actions:")
+            for place in transition._actions:
+                print("\t"+place._nom + ": " + str(transition._actions[place]))
         pass
 
     def addPlace(self,place):
@@ -23,3 +40,6 @@ class Petri():
             if place not in self._listPlaces:
                 return False
         self._listTransitions.append(Transition(nom, condition, action))
+
+    def buildArbre(self):
+        pass
