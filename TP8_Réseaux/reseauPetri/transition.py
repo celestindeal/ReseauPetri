@@ -35,4 +35,11 @@ class Transition():
             key._jetons -= self._conditions[key]
         for key in self._actions:
             key._jetons += self._actions[key]
+    
+    def inverserTransition(self):
+        for key in self._conditions:
+            key._jetons += self._conditions[key]
+        for key in self._actions:
+            key._jetons -= self._actions[key]
+
 

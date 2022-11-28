@@ -72,12 +72,19 @@ class Petri():
             n.addValue(place._nom, place._jetons)
         self._arbre.addNoeud(n, None)
 
-        self.parcoursArbre(self._arbre._listNoeud[0])
+        self.parcoursArbre(self._arbre._listNoeud[0], 1)
+
+        print("\nArbre:", self._arbre._nom)
+        self._arbre.printArbre()
 
     
-    def parcoursArbre(self, antecedent):
+    def parcoursArbre(self, antecedent, nb):
 
         tp = self.findTransitionsPossibles()
+
+        tp_str = ""
+        for t in tp:
+            tp_str += t._nom
 
         # parcours des transitions possibles
         for t in tp:
@@ -93,11 +100,8 @@ class Petri():
 
             # ajoute le nouveau noeud à l'arbre
             if not self._arbre.addNoeud(n, t):
-                print("---")
-                #print(self._arbre.toString())
-                self._arbre.printArbre()
                 # recursivite si pas d'antecedent pareil
-                self.parcoursArbre(n)
-            else:
-                return
+                self.parcoursArbre(n, nb+1)
+
+            t.inverserTransition()
 

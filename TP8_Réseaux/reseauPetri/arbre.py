@@ -4,6 +4,8 @@ class Arbre ():
     Arbre des marquages d'un réseau de pétri
     """
 
+    NB_PLACE_PAR_NOEUD = 3
+
     def __init__(self,nom) -> None:
         """
         constructeur
@@ -11,27 +13,38 @@ class Arbre ():
         self._nom = nom         # nom de l'arbre (nom du réseau)
         self._listNoeud = []    # liste des noeuds
 
-    def printArbre(self, texte=None, n=None):
+    def printArbre(self):
         """
         affiche l'arbre
         """
-
-        # TODO: oui je sais t'aime pas faut faire deux fonctions
-        if n== None:
-            n = self._listNoeud[0]
-            texte = n.toString()
-
+        texte = self.parcoursPrintArbre(
+            "      "                                    # nombre d'espaces dans une flèche
+            + self._listNoeud[0].toString()             # valeur du premier noeud
+                  .ljust(Arbre.NB_PLACE_PAR_NOEUD*4),   # ajoute le nombre d'espaces pour 3 noeuds
+            self._listNoeud[0],           # le premier noeud
+            1)
+        
+        print(texte)
+      
+    def parcoursPrintArbre(self, texte, n, niveau):
         # quand on arrive sur une feuille
         if n._enfants == {}:
             texte += "\n"
             return texte
-        # sinon on ajoute la transistion et la valeur du noeud
+        # sinon
         else:
+            # on parcours les enfants
             for key in n._enfants:
-                texte += " -" + key + "-> " + n._enfants[key].toString()
-                texte = self.printArbre(texte, n._enfants[key])
-        print(texte)
-        return texte
+                # ajoute le bon nombre d'espaces
+                if texte[-1] == '\n':
+                    nb_espace = (6 + Arbre.NB_PLACE_PAR_NOEUD*4) * niveau
+                    texte += "".ljust(nb_espace)
+                # ajoute au texte le nom de la transition et la valeur du noeud : -t-> noeud
+                texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Arbre.NB_PLACE_PAR_NOEUD*4)
+                # recursivité : parcours des enfants
+                texte = self.parcoursPrintArbre(texte, n._enfants[key], niveau+1)
+        return texte   
+
     
     def toString(self):
         """
