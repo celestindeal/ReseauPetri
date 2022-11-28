@@ -36,4 +36,5 @@ petri.addTransition('D', {place5:1}, {place3:1})
 petri.addTransition('E', {place4:1,place5:1}, {place1:1})
 
 petri.printreseauPetri()
-KarpMiller(petri)
+#KarpMiller(petri)
+petri.buildArbre()

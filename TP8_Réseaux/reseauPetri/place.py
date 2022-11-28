@@ -13,3 +13,4 @@ class Place():
 
     def addPlaceSuivant(self,placeSuivant):
         self._placeSuivant = placeSuivant
+
