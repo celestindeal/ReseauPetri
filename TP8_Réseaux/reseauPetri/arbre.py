@@ -12,6 +12,7 @@ class Arbre ():
         """
         self._nom = nom         # nom de l'arbre (nom du réseau)
         self._listNoeud = []    # liste des noeuds
+        self._isBorne = True
 
     def printArbre(self):
         """
@@ -63,6 +64,7 @@ class Arbre ():
             while n._parent != None:
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
                 if noeud.compareNoeudGenerator(n._parent):
+                    self._isBorne = False
                     return True
                 n = n._parent
         return False
@@ -89,3 +91,4 @@ class Arbre ():
         # on ajoute le noeud à l'arbre
         self._listNoeud.append(noeud)
         return check
+

@@ -105,3 +105,6 @@ class Petri():
 
             t.inverserTransition()
 
+
+    def IsReseauBorne(self):
+        return self._arbre._isBorne

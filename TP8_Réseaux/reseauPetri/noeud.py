@@ -17,11 +17,14 @@ class Noeud():
         retourne la valeur du noeud en str
         """
         texte = ""
-        for key in self._valeurs:
-            texte += key \
-                  + "^" \
-                  + str(self._valeurs[key]) \
-                  + " "
+        if self._valeurs == {}:
+            texte = "ø"
+        else:
+            for key in self._valeurs:
+                texte += key \
+                    + "^" \
+                    + str(self._valeurs[key]) \
+                    + " "
         return texte
     
     def addValue(self, nomPlace, nbJetons):
