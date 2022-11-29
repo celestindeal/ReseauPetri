@@ -31,6 +31,9 @@ placeLa = Place("L arrivée",0, [placeLd], [])
 
 placeTemps = Place("Temps",0, [], [])
 
+petri._places_arrivee = [placeAa, placeBa, placeCa, placeDa]
+petri._place_temps = placeTemps
+
 
 placeAd.addPlaceSuivant([placeAa])
 placeBd.addPlaceSuivant([placeBa])
@@ -70,5 +73,8 @@ petri.printreseauPetri()
 petri.buildArbre()
 
 print("Le réseau est-il borné ? ->", petri.IsReseauBorne())
+
+print("Le minimum est :", petri._minimum)
+
 
 

@@ -13,6 +13,9 @@ class Petri():
         self._listPlaces = []
         self._listTransitions = []
         self._arbre = Arbre(nom)
+        self._places_arrivee = []
+        self._place_temps = None
+        self._minimum = 9999
         pass
 
     def printreseauPetri(self):
@@ -74,8 +77,8 @@ class Petri():
 
         self.parcoursArbre(self._arbre._listNoeud[0], 1)
 
-        print("\nArbre:", self._arbre._nom)
-        self._arbre.printArbre()
+        #print("\nArbre:", self._arbre._nom)
+        #self._arbre.printArbre()
 
     
     def parcoursArbre(self, antecedent, nb):
@@ -97,6 +100,14 @@ class Petri():
             n = Noeud(antecedent)
             for place in marquage:
                 n.addValue(place._nom, place._jetons)
+            # TP8 exo 2 : trouver le noeud d'arrivée avec le temps minimum
+            check = True
+            for place_arrivee in self._places_arrivee:
+                if place_arrivee._nom not in n._valeurs.keys():
+                    check = False
+            if check and self._minimum > self._place_temps._jetons:
+                self._minimum = self._place_temps._jetons
+            
 
             # ajoute le nouveau noeud à l'arbre
             if not self._arbre.addNoeud(n, t) and not self._arbre.isGenerator(n, t):
