@@ -99,7 +99,7 @@ class Petri():
                 n.addValue(place._nom, place._jetons)
 
             # ajoute le nouveau noeud à l'arbre
-            if not self._arbre.addNoeud(n, t):
+            if not self._arbre.addNoeud(n, t) and not self._arbre.isGenerator(n, t):
                 # recursivite si pas d'antecedent pareil
                 self.parcoursArbre(n, nb+1)
 

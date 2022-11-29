@@ -52,3 +52,16 @@ class Noeud():
                 return False
 
         return True
+    
+    def compareNoeudGenerator(self, noeudenfant):
+        # pour chaque place dans le noeud en controle que le noeud enfant a la meme place et le meme nombre de jetons ou plus 
+
+        #  problème il existe le cas oui le parent a des place que l'enfant n'a pas
+        for key in noeudenfant._valeurs:
+            try:                    #c'est pas la bonne solution   je veux dire si la place n'existe pas dans le noeud enfant
+                if self._valeurs[key] > noeudenfant._valeurs[key]:
+                    return False
+            except KeyError:
+                return False
+
+        return True

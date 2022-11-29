@@ -55,6 +55,17 @@ class Arbre ():
             texte += noeud.toString() + "\n"
         return texte
 
+    def isGenerator(self, noeud, transition):
+        
+        if noeud._parent != None:
+            n = noeud
+            # on parcours l'arbre 'à l'envers' -> on parcours les antécédents
+            while n._parent != None:
+                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+                if noeud.compareNoeudGenerator(n._parent):
+                    return True
+                n = n._parent
+        return False
 
     def addNoeud(self, noeud, transition):
         """
