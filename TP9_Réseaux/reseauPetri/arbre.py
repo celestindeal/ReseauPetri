@@ -31,17 +31,18 @@ class Arbre ():
       
     def parcoursPrintArbre(self, texte, n, niveau):
 
-        def hasAntecedant(n, value):
-            i = 1   # compteur de niveau
+        def hasAntecedant(n):
             antecedant = []  # liste des antecedant
             antecedant.append(n._parent)    # on ajoute le premier antecedant
             if n._parent == None:  # si il n'y a pas d'antecedant 
                 return 0
             else:
                 while antecedant != [None] :    # tant qu'il y a des antecedant
-                    i += 1 
-                    if value == antecedant[0]._valeurs:   
-                        return i
+                    if  n.compareNoeud(antecedant[0]):   
+                    # if value == antecedant[0]._valeurs:   
+                        return 1
+                    elif n.compareNoeudGenerator(antecedant[0]):
+                        return 2
                     antecedant.append(antecedant[0]._parent)   # on ajouter les autre antecedant
                     del (antecedant[0])   # on supprimer le premier antecedant étudier pour passer au suivant
             return 0
@@ -61,11 +62,11 @@ class Arbre ():
                     texte += "".ljust(nb_espace)
                 # ajoute au texte le nom de la transition et la valeur du noeud : -t-> noeud
                 
-                boucle = hasAntecedant(n, n._enfants[key]._valeurs)
-                if boucle != 0:	
-                    texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Arbre.NB_PLACE_PAR_NOEUD*4) + "     --On reboucle "+ str(boucle) + " niveau plus haut"
-                elif ():  # si le noeud est un noeud de génération pas encore prog 
-                    texte += " noeud de génération"
+                boucle = hasAntecedant(n._enfants[key])
+                if boucle ==1:  # si le noeud as un antécédent
+                    texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
+                elif boucle == 2:  # si le noeud est un noeud de génération 
+                    texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 else:
                     texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Arbre.NB_PLACE_PAR_NOEUD*4)
                 # recursivité : parcours des enfants
