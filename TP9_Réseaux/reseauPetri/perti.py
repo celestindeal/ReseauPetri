@@ -13,6 +13,9 @@ class Petri():
         self._listPlaces = []
         self._listTransitions = []
         self._arbre = Arbre(nom)
+        self._bloquant = False
+        self._propre = True
+        self._transitionsParcourues = []
         pass
 
     def printreseauPetri(self):
@@ -80,16 +83,17 @@ class Petri():
     def parcoursArbre(self, antecedent, nb):
 
         tp = self.findTransitionsPossibles()
-
-        tp_str = ""
-        for t in tp:
-            tp_str += t._nom
+        if len(tp) == 0:
+            self._bloquant = True
+            return
 
         # parcours des transitions possibles
         for t in tp:
 
             # execution de la transition
             t.execTransition()
+            if t not in self._transitionsParcourues:
+                self._transitionsParcourues.append(t)
 
             # créé un nouveau noeud avec le nouveau marquage
             marquage = self.findJetons()
@@ -112,3 +116,14 @@ class Petri():
 
     def IsReseauBorne(self):
         return self._arbre._isBorne
+
+    def estbloquant(self):
+        # teste si un reseau est bloquant
+        return self._bloquant
+    
+    def estQuasiVivant(self):
+        # teste si un reseau est quasi vivant
+        for t in self._listTransitions:
+            if t not in self._transitionsParcourues:
+                return (False, t._nom)
+        return (True, None)
