@@ -1,5 +1,6 @@
 from .arbre import Arbre
 from .noeud import Noeud
+from .graph import Graph
 from .transition import Transition
 
 
@@ -13,6 +14,7 @@ class Petri():
         self._listPlaces = []
         self._listTransitions = []
         self._arbre = Arbre(nom)
+        self._graph = Graph(nom)
         self._bloquant = False
         self._propre = True
         self._transitionsParcourues = []
@@ -66,6 +68,8 @@ class Petri():
             if check:
                 transitionsPossibles.append(t)
         return transitionsPossibles
+    
+    ###############################  Gestion de l'arbre ###############################        
 
     def buildArbre(self):
         # init
@@ -77,9 +81,6 @@ class Petri():
 
         self.parcoursArbre(self._arbre._listNoeud[0], 1)
 
-        
-
-    
     def parcoursArbre(self, antecedent, nb):
 
         tp = self.findTransitionsPossibles()
@@ -107,10 +108,54 @@ class Petri():
                 self.parcoursArbre(n, nb+1)
 
             t.inverserTransition()
-    
+            
     def printArbre(self):
         print("\nArbre:", self._arbre._nom)
         self._arbre.printArbre()
+        
+        
+    ###############################  Gestion du graph ###############################        
+    def buildGraph(self):
+        # init
+        marquageInit = self.findJetons()
+        n = Noeud(None)
+        for place in marquageInit:
+            n.addValue(place._nom, place._jetons)
+        self._graph.addNoeud(n, None)
+
+        self.parcoursGraph(self._graph._listNoeud[0], 1)
+
+    def parcoursGraph(self, antecedent, nb):
+
+        tp = self.findTransitionsPossibles()
+        if len(tp) == 0:
+            self._bloquant = True
+            return
+
+        # parcours des transitions possibles
+        for t in tp:
+
+            # execution de la transition
+            t.execTransition()
+            if t not in self._transitionsParcourues:
+                self._transitionsParcourues.append(t)
+
+            # créé un nouveau noeud avec le nouveau marquage
+            marquage = self.findJetons()
+            n = Noeud(antecedent)
+            for place in marquage:
+                n.addValue(place._nom, place._jetons)
+
+            # ajoute le nouveau noeud à l'arbre
+            if not self._graph.addNoeud(n, t) and not self._graph.isGenerator(n, t):
+                # recursivite si pas d'antecedent pareil
+                self.parcoursArbre(n, nb+1)
+
+            t.inverserTransition()
+    
+    def printGraph(self):
+        print("\Graph:", self._graph._nom)
+        self._graph.printGraph()
 
 
 
