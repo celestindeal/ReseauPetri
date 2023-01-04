@@ -163,12 +163,12 @@ class Petri():
             # ajoute le nouveau noeud à l'arbre
             if not self._graph.addNoeud(n, t) and not self._graph.isGenerator(n, t):
                 # recursivite si pas d'antecedent pareil
-                self.parcoursArbre(n, nb+1)
+                self.parcoursGraph(n, nb+1)
 
             t.inverserTransition()
     
     def printGraph(self):
-        print("\Graph:", self._graph._nom)
+        print("Graph:", self._graph._nom)
         self._graph.printGraph()
 
 

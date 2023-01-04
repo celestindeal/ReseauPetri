@@ -24,31 +24,16 @@ class Graph ():
             "      "                                    # nombre d'espaces dans une flèche
             + self._listNoeud[0].toString()             # valeur du premier noeud
                   .ljust(Graph.NB_PLACE_PAR_NOEUD*4),   # ajoute le nombre d'espaces pour 3 noeuds
-            self._listNoeud[0],           # le premier noeud
-            1)
+            self._listNoeud[0],                         # le premier noeud
+            1,                                          # le niveau
+            []                                          # les noeuds parcourus
+        )
         
         print(texte)
     
       
       
-    def parcoursPrintGraph(self, texte, n, niveau):
-
-        def hasAntecedant(n):
-            antecedant = []  # liste des antecedant
-            antecedant.append(n._parent)    # on ajoute le premier antecedant
-            if n._parent == None:  # si il n'y a pas d'antecedant 
-                return 0
-            else:
-                while antecedant != [None] :    # tant qu'il y a des antecedant
-                    if  n.compareNoeud(antecedant[0]):   
-                    # if value == antecedant[0]._valeurs:   
-                        return 1
-                    elif n.compareNoeudGenerator(antecedant[0]):
-                        return 2
-                    antecedant.append(antecedant[0]._parent)   # on ajouter les autre antecedant
-                    del (antecedant[0])   # on supprimer le premier antecedant étudier pour passer au suivant
-            return 0
-
+    def parcoursPrintGraph(self, texte, n, niveau, parcourus):
 
         # quand on arrive sur une feuille
         if n._enfants == {}:
@@ -64,15 +49,20 @@ class Graph ():
                     texte += "".ljust(nb_espace)
                 # ajoute au texte le nom de la transition et la valeur du noeud : -t-> noeud
                 
-                boucle = hasAntecedant(n._enfants[key])
-                if boucle ==1:  # si le noeud as un antécédent
+                if n._enfants[key] in parcourus:  # si le noeud as un antécédent
                     texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
-                elif boucle == 2:  # si le noeud est un noeud de génération 
+                elif n._parent != None and n._parent.compareNoeudGenerator(n):  # si le noeud est un noeud de génération 
                     texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 else:
                     texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Graph.NB_PLACE_PAR_NOEUD*4)
                 # recursivité : parcours des enfants
-                texte = self.parcoursPrintGraph(texte, n._enfants[key], niveau+1)
+                if n._enfants[key] not in parcourus:
+                    parcourus.append(n._enfants[key])
+                    texte = self.parcoursPrintGraph(texte, n._enfants[key], niveau+1, parcourus)
+                else:
+                    # quand on arrive sur une feuille
+                    texte += "\n"
+                    
         return texte   
 
   

@@ -95,6 +95,7 @@ ClientServeur.addTransition('F', {DemandeConnexionClient:1,ServeurDeco:1}, {Comf
 ClientServeur.addTransition('G', {ServeurCo:1}, {ServeurAttDeco:1,DemandeDeconnexionServeur:1})                     # le serveur demande la déconnexion
 ClientServeur.addTransition('H', {ServeurAttDeco:1,ComfirmationDeconnexionCLient:1}, {ServeurDeco:1})
 ClientServeur.addTransition('I', {DemandeDeconnexionClient:1,ServeurCo:1}, {ServeurDeco:1,ComfirmationDeconnexionServeur:1})
+# COMMENTEZ CETTE LIGNE POUR RENDRE LE RÉSEAU BLOQUANT LORSQUE LE CLIENT ET LE SERVEUR DEMANDENT LA DECONNEXION EN MEME TEMPS
 ClientServeur.addTransition('J', {clientAttDeco:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientDeco:1})
 # R1.printreseauPetri()
 
@@ -106,7 +107,10 @@ ClientServeur.buildArbre()
 ClientServeur.printArbre()
 ClientServeur.buildGraph()
 ClientServeur.printGraph()
+ClientServeur._graph.printVE()
 print("Le réseau est-il borné ? ->", ClientServeur.IsReseauBorne())
 print("Le réseau est-il blaquant ? ->", ClientServeur.estbloquant())
 print("Le réseau est-il quasi vivant ? ->", ClientServeur.estQuasiVivant())
+print("Vous pouvez commenter la ligne 99 pour supprimer la transition J et rendre le\
+ réseau bloquant si le client et le serveur demandent la déconnexion en même temps.")
 
