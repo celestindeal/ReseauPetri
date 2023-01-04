@@ -133,4 +133,12 @@ class Graph ():
                 # on ajoute le noeud à l'arbre
                 self._listNoeud.append(noeud)
         return check
+    
+    def printVE(self):
+        print("V:")
+        for n in self._listNoeud:
+            print(n.toString())
+        print("E:")
+        for a in self._listArcs:
+            print(a.toString())
 
