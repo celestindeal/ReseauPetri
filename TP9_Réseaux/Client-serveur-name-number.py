@@ -34,17 +34,17 @@ ComfirmationDeconnexionServeur = Place("13",0,[],[])
 
 
 clientDeco.addPlaceSuivant([clientAttConnexion,DemandeConnexionClient,DemandeDeconnexionServeur,clientAttDeco,DemandeDeconnexionClient,ServeurAttDeco])
-clientAttConnexion.addPlaceSuivant([clientCo])
+clientAttConnexion.addPlaceSuivant([clientCo,clientDeco,ServeurDeco])
 clientCo.addPlaceSuivant([clientAttDeco,DemandeDeconnexionClient,ComfirmationDeconnexionCLient])
 clientAttDeco.addPlaceSuivant([clientDeco,ServeurDeco])
 
 ServeurDeco.addPlaceSuivant([ServeurCo,ComfirmationConnexionServeur,DemandeDeconnexionServeur,clientAttDeco,DemandeDeconnexionClient,ServeurAttDeco])
 ServeurCo.addPlaceSuivant([ServeurAttDeco,ComfirmationDeconnexionServeur,ServeurDeco])
-ServeurAttDeco.addPlaceSuivant([clientDeco,ServeurDeco])
+ServeurAttDeco.addPlaceSuivant([clientDeco,ServeurDeco,clientDeco])
 
 DemandeConnexionClient.addPlaceSuivant([ServeurCo,ComfirmationConnexionServeur])
 ComfirmationConnexionServeur.addPlaceSuivant([clientCo])
-DemandeDeconnexionServeur.addPlaceSuivant([ComfirmationDeconnexionCLient,clientDeco,ServeurDeco])
+DemandeDeconnexionServeur.addPlaceSuivant([ComfirmationDeconnexionCLient,clientDeco,ServeurDeco,clientDeco])
 ComfirmationDeconnexionCLient.addPlaceSuivant([ServeurDeco])
 DemandeDeconnexionClient.addPlaceSuivant([ComfirmationDeconnexionServeur,clientDeco,ServeurDeco])
 ComfirmationDeconnexionServeur.addPlaceSuivant([clientDeco])
@@ -95,7 +95,7 @@ ClientServeur.addTransition('F', {DemandeConnexionClient:1,ServeurDeco:1}, {Comf
 ClientServeur.addTransition('G', {ServeurCo:1}, {ServeurAttDeco:1,DemandeDeconnexionServeur:1})                     # le serveur demande la déconnexion
 ClientServeur.addTransition('H', {ServeurAttDeco:1,ComfirmationDeconnexionCLient:1}, {ServeurDeco:1})
 ClientServeur.addTransition('I', {DemandeDeconnexionClient:1,ServeurCo:1}, {ServeurDeco:1,ComfirmationDeconnexionServeur:1})
-ClientServeur.addTransition('J', {clientAttDeco:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientCo:1})
+ClientServeur.addTransition('J', {clientAttDeco:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientDeco:1})
 # R1.printreseauPetri()
 
 
