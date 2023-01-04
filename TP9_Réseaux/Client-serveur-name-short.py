@@ -88,14 +88,14 @@ ClientServeur.addPlace(ComfirmationDeconnexionServeur)
 
 ClientServeur.addTransition('A', {clientDeco:1}, {clientAttConnexion:1,DemandeConnexionClient:1})
 ClientServeur.addTransition('B',  {clientAttConnexion:1,ComfirmationConnexionServeur:1}, {clientCo:1})
-ClientServeur.addTransition('C', {clientCo:1,DemandeDeconnexionServeur:1}, {ComfirmationDeconnexionCLient:1})
-ClientServeur.addTransition('D', {clientCo:1}, {clientAttDeco:1,DemandeDeconnexionClient:1})                     # le client demande la déconnexion
-ClientServeur.addTransition('E', {clientAttDeco:1,ComfirmationDeconnexionServeur:1}, {clientDeco:1})
+ClientServeur.addTransition('E', {clientCo:1,DemandeDeconnexionServeur:1}, {clientDeco:1,ComfirmationDeconnexionCLient:1})
+ClientServeur.addTransition('C', {clientCo:1}, {clientAttDeco:1,DemandeDeconnexionClient:1})                     # le client demande la déconnexion
+ClientServeur.addTransition('D', {clientAttDeco:1,ComfirmationDeconnexionServeur:1}, {clientDeco:1})
 ClientServeur.addTransition('F', {DemandeConnexionClient:1,ServeurDeco:1}, {ComfirmationConnexionServeur:1,ServeurCo:1})
 ClientServeur.addTransition('G', {ServeurCo:1}, {ServeurAttDeco:1,DemandeDeconnexionServeur:1})                     # le serveur demande la déconnexion
 ClientServeur.addTransition('H', {ServeurAttDeco:1,ComfirmationDeconnexionCLient:1}, {ServeurDeco:1})
 ClientServeur.addTransition('I', {DemandeDeconnexionClient:1,ServeurCo:1}, {ServeurDeco:1,ComfirmationDeconnexionServeur:1})
-ClientServeur.addTransition('J', {clientAttConnexion:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientCo:1})
+ClientServeur.addTransition('J', {clientAttDeco:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientCo:1})
 # R1.printreseauPetri()
 
 
