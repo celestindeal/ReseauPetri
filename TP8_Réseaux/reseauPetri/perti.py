@@ -1,6 +1,7 @@
 from .arbre import Arbre
 from .noeud import Noeud
 from .transition import Transition
+from .arc import Arc
 
 
 class Petri():
@@ -70,15 +71,22 @@ class Petri():
         n = Noeud(None)
         for place in marquageInit:
             n.addValue(place._nom, place._jetons)
-        self._arbre.addNoeud(n, None)
+        self._arbre._listNoeud.append(n)
 
+        #print("===============================")
         self.parcoursArbre(self._arbre._listNoeud[0], 1)
 
         print("\nArbre:", self._arbre._nom)
-        self._arbre.printArbre()
+        #self._arbre.printArbre()
+        for n in self._arbre._listNoeud:
+            print(n.toString())
+        for a in self._arbre._listArcs:
+            print(a.toString())
 
     
     def parcoursArbre(self, antecedent, nb):
+
+        #print(">>>>>>>>>>>", antecedent.toString())
 
         tp = self.findTransitionsPossibles()
 
@@ -88,6 +96,8 @@ class Petri():
 
         # parcours des transitions possibles
         for t in tp:
+
+            print(t._nom)
 
             # execution de la transition
             t.execTransition()
