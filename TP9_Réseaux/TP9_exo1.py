@@ -46,24 +46,24 @@ print("Le réseau est-il quasi vivant ? ->", R1.estQuasiVivant())
 
 '''Test réseau de Petri Générateur'''
 
-# R5 = Petri('TD R5')
-# place1Generator = Place("1",1, [], [])
-# place1Generator.addPlaceAntecedant([place1Generator])
-# place2Generator = Place("2",0,[place1Generator],[])
-# R5.addPlace(place1Generator)
-# R5.addPlace(place2Generator)
-# R5.addTransition('A', {place1Generator:1}, {place1Generator:1,place2Generator:1})
-# R5.addTransition('B', {place1Generator:1}, {})
+R5 = Petri('TD R5')
+place1Generator = Place("1",1, [], [])
+place1Generator.addPlaceAntecedant([place1Generator])
+place2Generator = Place("2",0,[place1Generator],[])
+R5.addPlace(place1Generator)
+R5.addPlace(place2Generator)
+R5.addTransition('A', {place1Generator:1}, {place1Generator:1,place2Generator:1})
+R5.addTransition('B', {place1Generator:1}, {})
 
-# #KarpMiller(petri)
-# R5.buildArbre()
+#KarpMiller(petri)
+R5.buildArbre()
 
 
-# # R5.printreseauPetri()
-# R5.printArbre()
-# print("Le réseau est-il borné ? ->", R5.IsReseauBorne())
-# print("Le réseau est-il blaquant ? ->", R5.estbloquant())
-# print("Le réseau est-il quasi vivant ? ->", R5.estQuasiVivant())
+# R5.printreseauPetri()
+R5.printArbre()
+print("Le réseau est-il borné ? ->", R5.IsReseauBorne())
+print("Le réseau est-il blaquant ? ->", R5.estbloquant())
+print("Le réseau est-il quasi vivant ? ->", R5.estQuasiVivant())
 
 # ## R2
 # R2 = Petri('TD R2')

@@ -16,6 +16,7 @@ class Petri():
         self._arbre = Arbre(nom)
         self._graph = Graph(nom)
         self._bloquant = False
+        self._marquageBloque = []
         self._propre = True
         self._transitionsParcourues = []
         pass
@@ -86,6 +87,12 @@ class Petri():
         tp = self.findTransitionsPossibles()
         if len(tp) == 0:
             self._bloquant = True
+            # créé le marquage actuel
+            marquage = self.findJetons()
+            n = Noeud(antecedent)
+            for place in marquage:
+                n.addValue(place._nom, place._jetons)
+            self._marquageBloque.append(n.toString())
             return
 
         # parcours des transitions possibles
@@ -130,6 +137,12 @@ class Petri():
         tp = self.findTransitionsPossibles()
         if len(tp) == 0:
             self._bloquant = True
+            # créé le marquage actuel
+            marquage = self.findJetons()
+            n = Noeud(antecedent)
+            for place in marquage:
+                n.addValue(place._nom, place._jetons)
+            self._marquageBloque.append(n.toString())
             return
 
         # parcours des transitions possibles
@@ -164,7 +177,7 @@ class Petri():
 
     def estbloquant(self):
         # teste si un reseau est bloquant
-        return self._bloquant
+        return (self._bloquant, self._marquageBloque)
     
     def estQuasiVivant(self):
         # teste si un reseau est quasi vivant
