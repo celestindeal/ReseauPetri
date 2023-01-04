@@ -2,6 +2,7 @@ from .arbre import Arbre
 from .noeud import Noeud
 from .graph import Graph
 from .transition import Transition
+from .arc import Arc
 
 
 class Petri():
@@ -128,7 +129,7 @@ class Petri():
         n = Noeud(None)
         for place in marquageInit:
             n.addValue(place._nom, place._jetons)
-        self._graph.addNoeud(n, None)
+        self._graph._listNoeud.append(n)
 
         self.parcoursGraph(self._graph._listNoeud[0], 1)
 
@@ -185,3 +186,11 @@ class Petri():
             if t not in self._transitionsParcourues:
                 return (False, t._nom)
         return (True, None)
+    
+    def estPropre(self):
+        # si y'a pas le M0 dans l'arbre (hors premier noud) 
+        if self._transitionsParcourues[0] in self._transitionsParcourues[0:]:
+            return False
+        # si c'est bloquant
+        if self.estbloquant():
+            return False

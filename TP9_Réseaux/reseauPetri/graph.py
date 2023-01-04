@@ -1,3 +1,4 @@
+from.arc import Arc
 
 class Graph ():
     """
@@ -13,6 +14,7 @@ class Graph ():
         self._nom = nom         # nom de l'Graph (nom du réseau)
         self._listNoeud = []    # liste des noeuds
         self._isBorne = True
+        self._listArcs = []
 
     def printGraph(self):
         """
@@ -108,15 +110,27 @@ class Graph ():
         # pour les noeuds qui on un antécédents
         if noeud._parent != None:
             n = noeud
+            # si un antécédent avec les mêmes valeurs existe, il sera stocké dans cette variable
+            ant = None
             # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
             while n._parent != None:
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
                 if noeud.compareNoeud(n._parent):
                     check = True
+                    # on stocke le parent avec les mêmes valeurs
+                    ant = n._parent
                 n = n._parent
-            # on ajoute ce noeud comme étant l'enfant de son parent
-            noeud._parent.addEnfant(transition._nom, noeud)
-        # on ajoute le noeud à l'Graph
-        self._listNoeud.append(noeud)
+            # si un parent aux meme valeurs existe
+            if check:
+                # on ajoute ce parent comme étant l'enfant
+                noeud._parent.addEnfant(transition._nom, ant)
+                self._listArcs.append(Arc(noeud._parent, ant, transition._nom))
+            # sinon
+            else:
+                # on ajoute ce noeud comme étant l'enfant de son parent
+                noeud._parent.addEnfant(transition._nom, noeud)
+                self._listArcs.append(Arc(noeud._parent, noeud, transition._nom))
+                # on ajoute le noeud à l'arbre
+                self._listNoeud.append(noeud)
         return check
 
