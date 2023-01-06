@@ -11,6 +11,7 @@ class Noeud():
         self._valeurs = {}          # nom de la place : nombre de jetons
         self._parent = parent       # noeud parent
         self._enfants = {}          # neurds enfants -> clé = nom de la transition : valeur = neoud enfant
+        self._marquagePropre = False
     
     def toString(self):
         """

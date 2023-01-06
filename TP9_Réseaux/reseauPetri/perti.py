@@ -130,6 +130,9 @@ class Petri():
         for place in marquageInit:
             n.addValue(place._nom, place._jetons)
         self._graph._listNoeud.append(n)
+        self._graph._m0 = n
+        print(self._graph._listNoeud[0])
+        print(self._graph._m0)
 
         self.parcoursGraph(self._graph._listNoeud[0], 1)
 
@@ -188,9 +191,34 @@ class Petri():
         return (True, None)
     
     def estPropre(self):
+
+        def parcoursPropre(m):
+            for n in m._parent:
+                if not n._marquagePropre:
+                    n._marquagePropre = True
+                    parcoursPropre(n)
+
+        # marquage initial
+        m0 = self._graph._listNoeud[0]
+
         # si y'a pas le M0 dans l'arbre (hors premier noud) 
-        if self._transitionsParcourues[0] in self._transitionsParcourues[0:]:
+        #if self._transitionsParcourues[0] in self._transitionsParcourues[0:]:
+        #    print("m0")
+        #    return False
+        if m0._parent == None:
+            print("m0 2")
             return False
         # si c'est bloquant
         if self.estbloquant():
+            print("bloquant")
             return False
+
+        parcoursPropre(m0)
+
+        for n in self._graph._listNoeud:
+            if not n._marquagePropore:
+                print("pas propre")
+                return False
+
+        return True
+

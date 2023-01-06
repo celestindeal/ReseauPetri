@@ -15,6 +15,7 @@ class Graph ():
         self._listNoeud = []    # liste des noeuds
         self._isBorne = True
         self._listArcs = []
+        self._m0 = None
 
     def printGraph(self):
         """
@@ -51,7 +52,7 @@ class Graph ():
                 
                 if n._enfants[key] in parcourus:  # si le noeud as un antécédent
                     texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
-                elif n._parent != None and n._parent.compareNoeudGenerator(n):  # si le noeud est un noeud de génération 
+                elif n._parent != self._m0 and n._parent.compareNoeudGenerator(n):  # si le noeud est un noeud de génération 
                     texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 else:
                     texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Graph.NB_PLACE_PAR_NOEUD*4)
@@ -78,10 +79,10 @@ class Graph ():
 
     def isGenerator(self, noeud, transition):
         
-        if noeud._parent != None:
+        if noeud._parent != self._m0:
             n = noeud
             # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
-            while n._parent != None:
+            while n._parent != self._m0:
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
                 if noeud.compareNoeudGenerator(n._parent):
                     self._isBorne = False
@@ -98,12 +99,19 @@ class Graph ():
         """
         check = False
         # pour les noeuds qui on un antécédents
-        if noeud._parent != None:
+        if noeud._parent != self._m0:
             n = noeud
             # si un antécédent avec les mêmes valeurs existe, il sera stocké dans cette variable
             ant = None
-            # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
-            while n._parent != None:
+            # on parcours le graphe 'à l'envers' -> on parcours les antécédents
+            ####while not n._parent.compareNoeud(self._m0):
+            while n._parent.toString() != self._m0.toString():
+                if n._parent == self._m0:
+                    print("kc")
+                if n._parent.toString() == self._m0.toString():
+                    print("kc 2")
+                print(n.toString(), n._parent.toString() , self._m0.toString())
+                    #   print(n , self._m0)
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
                 if noeud.compareNoeud(n._parent):
                     check = True
@@ -114,6 +122,7 @@ class Graph ():
             if check:
                 # on ajoute ce parent comme étant l'enfant
                 noeud._parent.addEnfant(transition._nom, ant)
+                ant._parent = noeud._parent
                 self._listArcs.append(Arc(noeud._parent, ant, transition._nom))
             # sinon
             else:
