@@ -9,64 +9,24 @@ ClientServeur = Petri('TD R1')
 
 
 # Place de l'état du client 
-clientDeco = Place("clientDeco",1, [], [])
-clientAttConnexion = Place("clientAttConnexion",0,[],[])
-clientCo = Place("clientCo",0,[],[])
-clientAttDeco = Place("clientAttDeco",0,[],[])
+clientDeco = Place("clientDeco",1)
+clientAttConnexion = Place("clientAttConnexion",0)
+clientCo = Place("clientCo",0)
+clientAttDeco = Place("clientAttDeco",0)
 
 # Place de l'état du serveur
-ServeurDeco = Place("ServeurDeco",1, [], [])
-ServeurCo = Place("ServeurCo",0,[],[])
-ServeurAttDeco = Place("ServeurAttDeco",0,[],[])
+ServeurDeco = Place("ServeurDeco",1)
+ServeurCo = Place("ServeurCo",0)
+ServeurAttDeco = Place("ServeurAttDeco",0)
 
 
 # Place des l'états de transition 
-DemandeConnexionClient = Place("DemandeConnexionClient",0, [], [])
-ComfirmationConnexionServeur = Place("ComfirmationConnexionServeur",0,[],[])
-DemandeDeconnexionServeur = Place("DemandeDeconnexionServeur",0,[],[])                # le serveur demande la déconnexion
-ComfirmationDeconnexionCLient = Place("ComfirmationDeconnexionCLient",0,[],[])
-DemandeDeconnexionClient = Place("DemandeDeconnexionClient",0,[],[])                  # le client demande la déconnexion
-ComfirmationDeconnexionServeur = Place("ComfirmationDeconnexionServeur",0,[],[])
-
-
-# déclaration des places suivantes
-
-
-clientDeco.addPlaceSuivant([clientAttConnexion,DemandeConnexionClient,DemandeDeconnexionServeur,clientAttDeco,DemandeDeconnexionClient,ServeurAttDeco])
-clientAttConnexion.addPlaceSuivant([clientCo,clientDeco,ServeurDeco])
-clientCo.addPlaceSuivant([clientAttDeco,DemandeDeconnexionClient,ComfirmationDeconnexionCLient])
-clientAttDeco.addPlaceSuivant([clientDeco,ServeurDeco])
-
-ServeurDeco.addPlaceSuivant([ServeurCo,ComfirmationConnexionServeur,DemandeDeconnexionServeur,clientAttDeco,DemandeDeconnexionClient,ServeurAttDeco])
-ServeurCo.addPlaceSuivant([ServeurAttDeco,ComfirmationDeconnexionServeur,ServeurDeco])
-ServeurAttDeco.addPlaceSuivant([clientDeco,ServeurDeco,clientDeco])
-
-DemandeConnexionClient.addPlaceSuivant([ServeurCo,ComfirmationConnexionServeur])
-ComfirmationConnexionServeur.addPlaceSuivant([clientCo])
-DemandeDeconnexionServeur.addPlaceSuivant([ComfirmationDeconnexionCLient,clientDeco,ServeurDeco,clientDeco])
-ComfirmationDeconnexionCLient.addPlaceSuivant([ServeurDeco])
-DemandeDeconnexionClient.addPlaceSuivant([ComfirmationDeconnexionServeur,clientDeco,ServeurDeco])
-ComfirmationDeconnexionServeur.addPlaceSuivant([clientDeco])
-
-
-
-#  Déclaration des antécédents
-
-clientDeco.addPlaceAntecedant([clientCo,DemandeDeconnexionServeur,clientAttDeco,ComfirmationDeconnexionServeur])
-clientAttConnexion.addPlaceAntecedant([clientDeco,DemandeConnexionClient])
-clientCo.addPlaceAntecedant([clientAttConnexion,ComfirmationConnexionServeur])
-clientAttDeco.addPlaceAntecedant([clientCo])
-
-ServeurDeco.addPlaceAntecedant([ServeurCo,DemandeDeconnexionClient,ServeurAttDeco,ComfirmationDeconnexionCLient])
-ServeurCo.addPlaceAntecedant([ServeurDeco,DemandeConnexionClient])
-ServeurAttDeco.addPlaceAntecedant([ServeurCo])
-
-DemandeConnexionClient.addPlaceAntecedant([clientDeco])
-ComfirmationConnexionServeur.addPlaceAntecedant([DemandeConnexionClient,ServeurDeco])
-DemandeDeconnexionServeur.addPlaceAntecedant([ServeurCo])
-ComfirmationDeconnexionCLient.addPlaceAntecedant([DemandeDeconnexionServeur,clientCo])
-DemandeDeconnexionClient.addPlaceAntecedant([clientCo])
-ComfirmationDeconnexionServeur.addPlaceAntecedant([ServeurCo,DemandeDeconnexionClient])
+DemandeConnexionClient = Place("DemandeConnexionClient",0)
+ComfirmationConnexionServeur = Place("ComfirmationConnexionServeur",0)
+DemandeDeconnexionServeur = Place("DemandeDeconnexionServeur",0)                # le serveur demande la déconnexion
+ComfirmationDeconnexionCLient = Place("ComfirmationDeconnexionCLient",0)
+DemandeDeconnexionClient = Place("DemandeDeconnexionClient",0)                  # le client demande la déconnexion
+ComfirmationDeconnexionServeur = Place("ComfirmationDeconnexionServeur",0)
 
 
 # Ajouter les places et les transitions au réseau
@@ -95,18 +55,18 @@ ClientServeur.addTransition('F', {DemandeConnexionClient:1,ServeurDeco:1}, {Comf
 ClientServeur.addTransition('G', {ServeurCo:1}, {ServeurAttDeco:1,DemandeDeconnexionServeur:1})                     # le serveur demande la déconnexion
 ClientServeur.addTransition('H', {ServeurAttDeco:1,ComfirmationDeconnexionCLient:1}, {ServeurDeco:1})
 ClientServeur.addTransition('I', {DemandeDeconnexionClient:1,ServeurCo:1}, {ServeurDeco:1,ComfirmationDeconnexionServeur:1})
+# COMMENTEZ CETTE LIGNE POUR RENDRE LE RÉSEAU BLOQUANT LORSQUE LE CLIENT ET LE SERVEUR DEMANDENT LA DECONNEXION EN MEME TEMPS
 ClientServeur.addTransition('J', {clientAttDeco:1,ServeurAttDeco:1,DemandeDeconnexionClient:1,DemandeDeconnexionServeur:1}, {ServeurDeco:1,clientDeco:1})
-# R1.printreseauPetri()
-
-
-#KarpMiller(petri)
 
 
 ClientServeur.buildArbre()
 ClientServeur.printArbre()
 ClientServeur.buildGraph()
 ClientServeur.printGraph()
+ClientServeur._graph.printVE()
 print("Le réseau est-il borné ? ->", ClientServeur.IsReseauBorne())
 print("Le réseau est-il blaquant ? ->", ClientServeur.estbloquant())
 print("Le réseau est-il quasi vivant ? ->", ClientServeur.estQuasiVivant())
+print("Vous pouvez commenter la ligne 58 pour supprimer la transition J et rendre le\
+ réseau bloquant si le client et le serveur demandent la déconnexion en même temps.")
 

@@ -64,7 +64,7 @@ class Arbre ():
                 
                 boucle = hasAntecedant(n._enfants[key])
                 if boucle ==1:  # si le noeud as un antécédent
-                    texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
+                    texte +=  key + "-> " + n._enfants[key].toString() + "(Valeur déjà rencontrée)" 
                 elif boucle == 2:  # si le noeud est un noeud de génération 
                     texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 else:

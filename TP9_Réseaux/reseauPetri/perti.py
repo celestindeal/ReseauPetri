@@ -171,7 +171,7 @@ class Petri():
         print("Graph:", self._graph._nom)
         self._graph.printGraph()
 
-
+    ###############################  Test du Réseau ###############################        
 
     def IsReseauBorne(self):
         return self._arbre._isBorne
