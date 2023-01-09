@@ -52,8 +52,10 @@ class Graph ():
                 
                 if n._enfants[key] in parcourus:  # si le noeud as un antécédent
                     texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
-                elif n._parent != self._m0 and n._parent.compareNoeudGenerator(n):  # si le noeud est un noeud de génération 
-                    texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
+                elif self._m0 not in n._parents: 
+                    for p in n._parents:
+                        if p.compareNoeudGenerator(n):  # si le noeud est un noeud de génération
+                            texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 else:
                     texte += " -" + key + "-> " + n._enfants[key].toString().ljust(Graph.NB_PLACE_PAR_NOEUD*4)
                 # recursivité : parcours des enfants
@@ -77,18 +79,18 @@ class Graph ():
             texte += noeud.toString() + "\n"
         return texte
 
-    def isGenerator(self, noeud, transition):
+    def isGenerator(self, noeud, child, transition, isgen):
         
-        if noeud._parent != self._m0:
-            n = noeud
-            # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
-            while n._parent != self._m0:
-                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
-                if noeud.compareNoeudGenerator(n._parent):
-                    self._isBorne = False
-                    return True
-                n = n._parent
-        return False
+        if self._m0 not in noeud._parents:
+            # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+            if child != None and child.compareNoeudGenerator(noeud):
+                self._isBorne = False
+                isgen = True
+           # n = n._parent
+            # on parcours le graphe 'à l'envers' -> on parcours les antécédents
+            for p in noeud._parents:
+                self.isGenerator(p, noeud, transition, isgen)
+        return isgen
 
     def addNoeud(self, noeud, transition):
         """
@@ -99,19 +101,15 @@ class Graph ():
         """
         check = False
         # pour les noeuds qui on un antécédents
-        if noeud._parent != self._m0:
+        if self._m0 not in noeud._parents:
             n = noeud
             # si un antécédent avec les mêmes valeurs existe, il sera stocké dans cette variable
             ant = None
             # on parcours le graphe 'à l'envers' -> on parcours les antécédents
             ####while not n._parent.compareNoeud(self._m0):
-            while n._parent.toString() != self._m0.toString():
-                if n._parent == self._m0:
+            while self._m0 not in n._parents:
+                if self._m0 in n._parents:
                     print("kc")
-                if n._parent.toString() == self._m0.toString():
-                    print("kc 2")
-                print(n.toString(), n._parent.toString() , self._m0.toString())
-                    #   print(n , self._m0)
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
                 if noeud.compareNoeud(n._parent):
                     check = True

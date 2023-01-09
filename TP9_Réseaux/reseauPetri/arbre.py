@@ -33,8 +33,8 @@ class Arbre ():
 
         def hasAntecedant(n):
             antecedant = []  # liste des antecedant
-            antecedant.append(n._parent)    # on ajoute le premier antecedant
-            if n._parent == None:  # si il n'y a pas d'antecedant 
+            antecedant.append(n._parents[0])    # on ajoute le premier antecedant
+            if n._parents[0] == None:  # si il n'y a pas d'antecedant 
                 return 0
             else:
                 while antecedant != [None] :    # tant qu'il y a des antecedant
@@ -43,7 +43,7 @@ class Arbre ():
                         return 1
                     elif n.compareNoeudGenerator(antecedant[0]):
                         return 2
-                    antecedant.append(antecedant[0]._parent)   # on ajouter les autre antecedant
+                    antecedant.append(antecedant[0]._parents[0])   # on ajouter les autre antecedant
                     del (antecedant[0])   # on supprimer le premier antecedant étudier pour passer au suivant
             return 0
 
@@ -86,15 +86,15 @@ class Arbre ():
 
     def isGenerator(self, noeud, transition):
         
-        if noeud._parent != None:
+        if noeud._parents[0] != None:
             n = noeud
             # on parcours l'arbre 'à l'envers' -> on parcours les antécédents
-            while n._parent != None:
+            while n._parents[0] != None:
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
-                if noeud.compareNoeudGenerator(n._parent):
+                if noeud.compareNoeudGenerator(n._parents[0]):
                     self._isBorne = False
                     return True
-                n = n._parent
+                n = n._parents[0]
         return False
 
     def addNoeud(self, noeud, transition):
@@ -106,16 +106,16 @@ class Arbre ():
         """
         check = False
         # pour les noeuds qui on un antécédents
-        if noeud._parent != None:
+        if noeud._parents[0] != None:
             n = noeud
             # on parcours l'arbre 'à l'envers' -> on parcours les antécédents
-            while n._parent != None:
+            while n._parents[0] != None:
                 # on vérifie si le nouveau noeud existe déjà parmis les antécédents
-                if noeud.compareNoeud(n._parent):
+                if noeud.compareNoeud(n._parents[0]):
                     check = True
-                n = n._parent
+                n = n._parents[0]
             # on ajoute ce noeud comme étant l'enfant de son parent
-            noeud._parent.addEnfant(transition._nom, noeud)
+            noeud._parents[0].addEnfant(transition._nom, noeud)
         # on ajoute le noeud à l'arbre
         self._listNoeud.append(noeud)
         return check

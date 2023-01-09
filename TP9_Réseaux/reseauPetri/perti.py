@@ -164,7 +164,7 @@ class Petri():
                 n.addValue(place._nom, place._jetons)
 
             # ajoute le nouveau noeud à l'arbre
-            if not self._graph.addNoeud(n, t) and not self._graph.isGenerator(n, t):
+            if not self._graph.addNoeud(n, t) and not self._graph.isGenerator(n, None, t, False):
                 # recursivite si pas d'antecedent pareil
                 self.parcoursGraph(n, nb+1)
 
@@ -193,7 +193,7 @@ class Petri():
     def estPropre(self):
 
         def parcoursPropre(m):
-            for n in m._parent:
+            for n in m._parents:
                 if not n._marquagePropre:
                     n._marquagePropre = True
                     parcoursPropre(n)
@@ -205,7 +205,7 @@ class Petri():
         #if self._transitionsParcourues[0] in self._transitionsParcourues[0:]:
         #    print("m0")
         #    return False
-        if m0._parent == None:
+        if m0._parents == [None]:
             print("m0 2")
             return False
         # si c'est bloquant
