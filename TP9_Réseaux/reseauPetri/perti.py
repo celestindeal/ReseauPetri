@@ -194,3 +194,8 @@ class Petri():
         # si c'est bloquant
         if self.estbloquant():
             return False
+        
+        # TODO: parcours des parents du noeud du marquage initial
+    
+    def estVivant(self):
+        return self.estQuasiVivant() and self.estPropre()

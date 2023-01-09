@@ -18,7 +18,7 @@ class Graph ():
 
     def printGraph(self):
         """
-        affiche l'Graph
+        affiche le graphe
         """
         texte = self.parcoursPrintGraph(
             "      "                                    # nombre d'espaces dans une flèche
@@ -41,7 +41,7 @@ class Graph ():
             return texte
         # sinon
         else:
-            # on parcours les enfants
+            # on parcourt les enfants
             for key in n._enfants:
                 # ajoute le bon nombre d'espaces
                 if texte[-1] == '\n':
@@ -49,7 +49,7 @@ class Graph ():
                     texte += "".ljust(nb_espace)
                 # ajoute au texte le nom de la transition et la valeur du noeud : -t-> noeud
                 
-                if n._enfants[key] in parcourus:  # si le noeud as un antécédent
+                if n._enfants[key] in parcourus:  # si le noeud a un antécédent
                     texte += "On reboucle "+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
                 elif n._parent != None and n._parent.compareNoeudGenerator(n):  # si le noeud est un noeud de génération 
                     texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
@@ -77,12 +77,15 @@ class Graph ():
         return texte
 
     def isGenerator(self, noeud, transition):
+        """
+        vérifie si une transition 'génère' des jetons, cad que pour les mêmes places à l'antécédent le nb de jetons augmente
+        """
         
         if noeud._parent != None:
             n = noeud
-            # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
+            # on parcourt le graphe 'à l'envers' -> on parcourt les antécédents
             while n._parent != None:
-                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+                # on vérifie si le nouveau noeud existe déjà parmi les antécédents
                 if noeud.compareNoeudGenerator(n._parent):
                     self._isBorne = False
                     return True
@@ -91,26 +94,26 @@ class Graph ():
 
     def addNoeud(self, noeud, transition):
         """
-        ajoute le neoud à l'Graph depuis la transition.
-        si le neoud n'a pas de parent, on l'ajoute directement à l'Graph, sinon, on vérifie si ce noeud existe déjà parmis
-        ses antécédents, puis on l'ajoute en tant qu'enfant de son parent et on l'ajoute à l'Graph
+        ajoute le neoud au graphe depuis la transition.
+        si le neoud n'a pas de parent, on l'ajoute directement au graphe, sinon, on vérifie si ce noeud existe déjà parmi
+        ses antécédents, puis on l'ajoute en tant qu'enfant de son parent et on l'ajoute au graphe
         :return: True si même antécédent trouvé, False sinon
         """
         check = False
-        # pour les noeuds qui on un antécédents
+        # pour les noeuds qui ont un antécédent
         if noeud._parent != None:
             n = noeud
             # si un antécédent avec les mêmes valeurs existe, il sera stocké dans cette variable
             ant = None
-            # on parcours l'Graph 'à l'envers' -> on parcours les antécédents
+            # on parcourt le graphe 'à l'envers' -> on parcourt les antécédents
             while n._parent != None:
-                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+                # on vérifie si le nouveau noeud existe déjà parmi les antécédents
                 if noeud.compareNoeud(n._parent):
                     check = True
                     # on stocke le parent avec les mêmes valeurs
                     ant = n._parent
                 n = n._parent
-            # si un parent aux meme valeurs existe
+            # si un parent aux mêmes valeurs existe
             if check:
                 # on ajoute ce parent comme étant l'enfant
                 noeud._parent.addEnfant(transition._nom, ant)
@@ -125,6 +128,9 @@ class Graph ():
         return check
     
     def printVE(self):
+        """
+        TP 9 - question 1
+        """
         print("V:")
         for n in self._listNoeud:
             print(n.toString())

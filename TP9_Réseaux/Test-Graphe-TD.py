@@ -30,16 +30,13 @@ R1.addTransition('E', {place4:1,place5:1}, {place1:1})
 # R1.printreseauPetri()
 
 
-#KarpMiller(petri)
-
-
 R1.buildArbre()
 R1.printArbre()
 R1.buildGraph()
 R1.printGraph()
 R1._graph.printVE()
 print("Le réseau est-il borné ? ->", R1.IsReseauBorne())
-print("Le réseau est-il blaquant ? ->", R1.estbloquant())
+print("Le réseau est-il bloquant ? ->", R1.estbloquant())
 print("Le réseau est-il quasi vivant ? ->", R1.estQuasiVivant())
 
 
@@ -53,7 +50,6 @@ R5.addPlace(place2Generator)
 R5.addTransition('A', {place1Generator:1}, {place1Generator:1,place2Generator:1})
 R5.addTransition('B', {place1Generator:1}, {})
 
-#KarpMiller(petri)
 R5.buildArbre()
 
 
@@ -63,7 +59,7 @@ R5.buildGraph()
 R5.printGraph()
 R5._graph.printVE()
 print("Le réseau est-il borné ? ->", R5.IsReseauBorne())
-print("Le réseau est-il blaquant ? ->", R5.estbloquant())
+print("Le réseau est-il bloquant ? ->", R5.estbloquant())
 print("Le réseau est-il quasi vivant ? ->", R5.estQuasiVivant())
 
 ## R2
@@ -84,7 +80,6 @@ R2.addTransition('C', {R2place4:1}, {R2place2:1, R2place1:1})
 R2.addTransition('D', {R2place4:1, R2place5:1}, {})
 R2.addTransition('E', {R2place5:1}, {R2place3:1, R2place2:1})
 
-#KarpMiller(petri)
 R2.buildArbre()
 
 

@@ -4,7 +4,7 @@ class Arbre ():
     Arbre des marquages d'un réseau de pétri
     """
 
-    NB_PLACE_PAR_NOEUD = 3
+    NB_PLACE_PAR_NOEUD = 3 # pour l'affichage
 
     def __init__(self,nom) -> None:
         """
@@ -30,21 +30,24 @@ class Arbre ():
       
       
     def parcoursPrintArbre(self, texte, n, niveau):
+        """
+        fonction récursive pour afficher l'arbre
+        """
 
-        def hasAntecedant(n):
-            antecedant = []  # liste des antecedant
-            antecedant.append(n._parent)    # on ajoute le premier antecedant
-            if n._parent == None:  # si il n'y a pas d'antecedant 
+        def hasAntecedent(n):
+            antecedent = []  # liste des antecedents
+            antecedent.append(n._parent)    # on ajoute le premier antecedent
+            if n._parent == None:  # si il n'y a pas d'antecedent 
                 return 0
             else:
-                while antecedant != [None] :    # tant qu'il y a des antecedant
-                    if  n.compareNoeud(antecedant[0]):   
-                    # if value == antecedant[0]._valeurs:   
+                while antecedent != [None] :    # tant qu'il y a des antecedents
+                    if  n.compareNoeud(antecedent[0]):   
+                    # if value == antecedent[0]._valeurs:   
                         return 1
-                    elif n.compareNoeudGenerator(antecedant[0]):
+                    elif n.compareNoeudGenerator(antecedent[0]):
                         return 2
-                    antecedant.append(antecedant[0]._parent)   # on ajouter les autre antecedant
-                    del (antecedant[0])   # on supprimer le premier antecedant étudier pour passer au suivant
+                    antecedent.append(antecedent[0]._parent)   # on ajoute les autres antecedents
+                    del (antecedent[0])   # on supprime le premier antecedent étudié pour passer au suivant
             return 0
 
 
@@ -62,8 +65,8 @@ class Arbre ():
                     texte += "".ljust(nb_espace)
                 # ajoute au texte le nom de la transition et la valeur du noeud : -t-> noeud
                 
-                boucle = hasAntecedant(n._enfants[key])
-                if boucle ==1:  # si le noeud as un antécédent
+                boucle = hasAntecedent(n._enfants[key])
+                if boucle == 1:  # si le noeud a un antécédent
                     texte +=  key + "-> " + n._enfants[key].toString() + "(Valeur déjà rencontrée)" 
                 elif boucle == 2:  # si le noeud est un noeud de génération 
                     texte += " noeud de génération"+ " (" + key + "-> " + n._enfants[key].toString() + ")" 
@@ -85,12 +88,15 @@ class Arbre ():
         return texte
 
     def isGenerator(self, noeud, transition):
+        """
+        vérifie si une transition 'génère' des jetons, cad que pour les mêmes places à l'antécédent le nb de jetons augmente
+        """
         
         if noeud._parent != None:
             n = noeud
-            # on parcours l'arbre 'à l'envers' -> on parcours les antécédents
+            # on parcourt l'arbre 'à l'envers' -> on parcourt les antécédents
             while n._parent != None:
-                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+                # on vérifie si le nouveau noeud existe déjà parmi les antécédents
                 if noeud.compareNoeudGenerator(n._parent):
                     self._isBorne = False
                     return True
@@ -100,17 +106,17 @@ class Arbre ():
     def addNoeud(self, noeud, transition):
         """
         ajoute le neoud à l'arbre depuis la transition.
-        si le neoud n'a pas de parent, on l'ajoute directement à l'arbre, sinon, on vérifie si ce noeud existe déjà parmis
+        si le neoud n'a pas de parent, on l'ajoute directement à l'arbre, sinon, on vérifie si ce noeud existe déjà parmi
         ses antécédents, puis on l'ajoute en tant qu'enfant de son parent et on l'ajoute à l'arbre
         :return: True si même antécédent trouvé, False sinon
         """
         check = False
-        # pour les noeuds qui on un antécédents
+        # pour les noeuds qui ont un antécédents
         if noeud._parent != None:
             n = noeud
-            # on parcours l'arbre 'à l'envers' -> on parcours les antécédents
+            # on parcourt l'arbre 'à l'envers' -> on parcourt les antécédents
             while n._parent != None:
-                # on vérifie si le nouveau noeud existe déjà parmis les antécédents
+                # on vérifie si le nouveau noeud existe déjà parmi les antécédents
                 if noeud.compareNoeud(n._parent):
                     check = True
                 n = n._parent

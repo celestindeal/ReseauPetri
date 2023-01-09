@@ -24,7 +24,7 @@ ServeurAttDeco = Place("ServeurAttDeco",0)
 DemandeConnexionClient = Place("DemandeConnexionClient",0)
 ComfirmationConnexionServeur = Place("ComfirmationConnexionServeur",0)
 DemandeDeconnexionServeur = Place("DemandeDeconnexionServeur",0)                # le serveur demande la déconnexion
-ComfirmationDeconnexionCLient = Place("ComfirmationDeconnexionCLient",0)
+ComfirmationDeconnexionCLient = Place("ComfirmationDeconnexionClient",0)
 DemandeDeconnexionClient = Place("DemandeDeconnexionClient",0)                  # le client demande la déconnexion
 ComfirmationDeconnexionServeur = Place("ComfirmationDeconnexionServeur",0)
 
@@ -47,7 +47,7 @@ ClientServeur.addPlace(ComfirmationDeconnexionServeur)
 
 
 ClientServeur.addTransition('A', {clientDeco:1}, {clientAttConnexion:1,DemandeConnexionClient:1})
-ClientServeur.addTransition('B',  {clientAttConnexion:1,ComfirmationConnexionServeur:1}, {clientCo:1})
+ClientServeur.addTransition('B', {clientAttConnexion:1,ComfirmationConnexionServeur:1}, {clientCo:1})
 ClientServeur.addTransition('E', {clientCo:1,DemandeDeconnexionServeur:1}, {clientDeco:1,ComfirmationDeconnexionCLient:1})
 ClientServeur.addTransition('C', {clientCo:1}, {clientAttDeco:1,DemandeDeconnexionClient:1})                     # le client demande la déconnexion
 ClientServeur.addTransition('D', {clientAttDeco:1,ComfirmationDeconnexionServeur:1}, {clientDeco:1})
@@ -65,7 +65,7 @@ ClientServeur.buildGraph()
 ClientServeur.printGraph()
 ClientServeur._graph.printVE()
 print("Le réseau est-il borné ? ->", ClientServeur.IsReseauBorne())
-print("Le réseau est-il blaquant ? ->", ClientServeur.estbloquant())
+print("Le réseau est-il bloquant ? ->", ClientServeur.estbloquant())
 print("Le réseau est-il quasi vivant ? ->", ClientServeur.estQuasiVivant())
 print("Vous pouvez commenter la ligne 58 pour supprimer la transition J et rendre le\
  réseau bloquant si le client et le serveur demandent la déconnexion en même temps.")
